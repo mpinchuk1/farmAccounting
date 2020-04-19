@@ -142,27 +142,29 @@ public class OrderController {
     void deleteRowFromTable(ActionEvent event) {
         List<Order> ordersForDel = orderTableView.getSelectionModel().getSelectedItems();
         StringBuilder delStringBuild = new StringBuilder("Are you sure to delete orders with id ");
+        int i = 0;
         for (Order order : ordersForDel) {
             delStringBuild.append(order.getId()).append(", ");
+            i++;
         }
-        delStringBuild.deleteCharAt(delStringBuild.length() - 1).deleteCharAt(delStringBuild.length() - 1).append("?");
-        String string = delStringBuild.toString();
-        System.out.println(string);
 
+        if(i > 0){
+            delStringBuild.deleteCharAt(delStringBuild.length() - 1).deleteCharAt(delStringBuild.length() - 1).append("?");
+            String string = delStringBuild.toString();
+            //System.out.println(string);
+            Alert alert = new Alert(Alert.AlertType.WARNING, string, ButtonType.YES, ButtonType.NO);
+            Optional<ButtonType> buttonType = alert.showAndWait();
+            if (buttonType.get() == ButtonType.YES) {
+                for (Order or : ordersForDel) {
+                    Long id = or.getId();
+                    dao.deleteOrder(id);
+                }
+                orderTableView.getItems().removeAll(ordersForDel);
+            } else if (buttonType.get() == ButtonType.NO) {
 
-        Alert alert = new Alert(Alert.AlertType.WARNING, string, ButtonType.YES, ButtonType.NO);
-
-        Optional<ButtonType> buttonType = alert.showAndWait();
-
-        if (buttonType.get() == ButtonType.YES) {
-            for (Order or : ordersForDel) {
-                Long id = or.getId();
-                dao.deleteOrder(id);
             }
-            orderTableView.getItems().removeAll(ordersForDel);
-        } else if (buttonType.get() == ButtonType.NO) {
-
         }
+
 
     }
 
@@ -173,7 +175,7 @@ public class OrderController {
             String temp = getMonthNumber(nv);
             filteredList.setPredicate((Order order) -> order.getDate().substring(0, 2).equals(temp));
         });
-
+        System.out.println(filteredList);
         orderTableView.setItems(filteredList);
 
     }
