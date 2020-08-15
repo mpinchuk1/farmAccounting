@@ -1,4 +1,5 @@
 Before start use MySQL commands:
+0. \connect root@localhost
 1. create database stasInduk;
 2. use stasInduk;
 3. create table orders (id bigint not null, bird varchar(255), date varchar(255), number bigint, totalPrice double precision, totalWeight double precision, unitPrice double precision, primary key (id));
