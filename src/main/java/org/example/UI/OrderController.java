@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 
 
 import javafx.collections.FXCollections;
@@ -22,6 +23,9 @@ public class OrderController {
 
     ObservableList<String> months = FXCollections.observableArrayList("January", "February", "March", "April",
             "May", "June", "July", "August", "September", "October", "November", "December");
+
+    ObservableList<String> years = FXCollections.observableArrayList("2018", "2019", "2020", "2021",
+            "2022", "2023", "2024", "2025", "2026");
 
     ObservableList<Order> orders;
     FilteredList<Order> filteredList;
@@ -81,13 +85,16 @@ public class OrderController {
     private ComboBox<String> monthBox;
 
     @FXML
+    private ComboBox<String> yearBox;
+
+    @FXML
     private Button addButton;
 
     @FXML
     private Button deleteButton;
 
     @FXML
-    private Button showButton;
+    private Button showFilteredButton;
     @FXML
     private Button showAllButton;
 
@@ -170,14 +177,21 @@ public class OrderController {
 
     @FXML
     void showDataOnTable(ActionEvent event) {
+        String month = monthBox.getSelectionModel().getSelectedItem();
+        String year = yearBox.getSelectionModel().getSelectedItem();
+        if(month != null && year != null){
+            String monthNum = getMonthNumber(month);
+            filteredList.setPredicate((Predicate<? super Order>) order -> {
+                //System.out.println(order.getDate().substring(6, 10).trim().equals(year) && order.getDate().substring(0, 2).equals(monthNum));
+                return order.getDate().substring(6, 10).equals(year) && order.getDate().substring(0, 2).equals(monthNum);
+            });
 
-        monthBox.valueProperty().addListener((o, ov, nv) -> {
-            String temp = getMonthNumber(nv);
-            filteredList.setPredicate((Order order) -> order.getDate().substring(0, 2).equals(temp));
-        });
-        System.out.println(filteredList);
-        orderTableView.setItems(filteredList);
+            System.out.println(filteredList);
+            orderTableView.setItems(filteredList);
+        }
 
+        //System.out.println(year);
+        //System.out.println(month);
     }
 
     @FXML
@@ -192,7 +206,7 @@ public class OrderController {
         orders = getOrdersDate();
         orderTableView.setItems(orders);
 
-        //monthBox.setValue("");
+        yearBox.setItems(years);
         monthBox.setItems(months);
         dateField.setValue(LocalDate.now());
         filteredList = new FilteredList<>(orders, e -> true);
