@@ -188,6 +188,12 @@ public class OrderController {
 
             System.out.println(filteredList);
             orderTableView.setItems(filteredList);
+        } else if (month == null && year != null){
+            filteredList.setPredicate((Predicate<? super Order>) order -> {
+                return order.getDate().substring(6, 10).equals(year);
+            });
+            System.out.println(filteredList);
+            orderTableView.setItems(filteredList);
         }
 
         //System.out.println(year);

@@ -39,7 +39,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="330.0">
                <children>
-                  <DatePicker fx:id="dateField" layoutX="164.0" layoutY="270.0" onAction="#showDataOnTable" prefHeight="25.0" prefWidth="142.0" />
+                  <DatePicker fx:id="dateField" layoutX="164.0" layoutY="270.0" prefHeight="25.0" prefWidth="142.0" />
                   <ComboBox fx:id="monthBox" layoutX="134.0" layoutY="495.0" prefHeight="25.0" prefWidth="143.0" promptText="Default" visibleRowCount="12" />
                   <Button fx:id="addButton" layoutX="90.0" layoutY="316.0" mnemonicParsing="false" onAction="#addRowToTable" prefHeight="42.0" prefWidth="151.0" text="Add new" textAlignment="CENTER" />
                   <Label layoutX="14.0" layoutY="495.0" prefHeight="25.0" prefWidth="117.0" text="Show for month:" textAlignment="CENTER">
